@@ -41,8 +41,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${proximaNova.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-2000 focus:rounded-card focus:bg-background focus:p-3 focus:text-foreground focus:ring-2 focus:ring-ring"
+        >
+          Naar de inhoud
+        </a>
         <Header />
-        <main className="grow">{children}</main>
+        {children}
         <Footer />
       </body>
     </html>
