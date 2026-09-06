@@ -6,12 +6,13 @@ import { LightningIcon } from "@phosphor-icons/react/dist/ssr/Lightning";
 import { RulerIcon } from "@phosphor-icons/react/dist/ssr/Ruler";
 import { TreeIcon } from "@phosphor-icons/react/dist/ssr/Tree";
 
-import { EnergyLabel } from "@/components/features/detail/EnergyLabel/EnergyLabel";
 import type { Fact } from "@/components/ui/FactGrid/FactGrid";
 import type { ListingDetail } from "@/lib/funda/types";
 import { formatArea } from "@/utils/format";
 
-export function useListingFacts(listing: ListingDetail): Fact[] {
+import { EnergyLabel } from "../EnergyLabel/EnergyLabel";
+
+export function getListingFacts(listing: ListingDetail): Fact[] {
   const facts: Fact[] = [];
 
   if (listing.livingArea !== null) {

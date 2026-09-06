@@ -1,6 +1,5 @@
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { FactGrid } from "@/components/ui/FactGrid/FactGrid";
-import { useListingFacts } from "@/hooks/useListingFacts";
 import type { ListingDetail } from "@/lib/funda/types";
 import { cn } from "@/utils/cn";
 
@@ -10,9 +9,10 @@ import { FeaturesSection } from "../FeaturesSection/FeaturesSection";
 import { InterestCard } from "../InterestCard/InterestCard";
 import { LocationSection } from "../LocationSection/LocationSection";
 import { PropertyHeader } from "../PropertyHeader/PropertyHeader";
+import { getListingFacts } from "./getListingFacts";
 
 export function Detail({ listing }: { listing: ListingDetail }) {
-  const facts = useListingFacts(listing);
+  const facts = getListingFacts(listing);
   const hasDetails = !!listing.description || !!listing.featureGroups.length;
 
   return (
