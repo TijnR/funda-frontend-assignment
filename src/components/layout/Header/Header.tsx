@@ -22,7 +22,8 @@ export function Header() {
             alt="Funda - Tijn Roozen"
             width={249}
             height={36}
-            priority
+            loading="eager"
+            fetchPriority="low"
             unoptimized
             className="h-8 w-auto shrink-0 md:h-9"
           />

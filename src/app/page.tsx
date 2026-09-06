@@ -1,18 +1,36 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { ListingResults } from "@/components/features/listings/ListingResults/ListingResults";
+import { ListingsSkeleton } from "@/components/features/listings/ListingsSkeleton/ListingsSkeleton";
+import { PAGE_SHELL_CLASS } from "@/styles/shared";
+import { cn } from "@/utils/cn";
 
 export const metadata: Metadata = {
   title: "Koopwoningen",
 };
 
-export default function HomePage() {
+/**
+ * Stays synchronous so the shell prerenders: the header, the page title and the
+ * footer paint immediately while the listings stream into the boundary below.
+ */
+export default function HomePage({ searchParams }: PageProps<"/">) {
   return (
-    <main
-      id="main-content"
-      tabIndex={-1}
-      className="grow mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8"
-    >
-      <h1 className="text-2xl font-bold">Koopwoningen</h1>
-      <button>test</button>
+    <main id="main-content" tabIndex={-1} className={cn(PAGE_SHELL_CLASS, "grow py-10")}>
+      <header className="mb-6 border-b pb-6 sm:mb-8">
+        <p className="font-heading text-xs font-bold tracking-widest text-primary uppercase">
+          Actueel aanbod
+        </p>
+        <h1 className="mt-2 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+          Koopwoningen in Nederland
+        </h1>
+        <p className="mt-3 max-w-xl text-muted-foreground">
+          Blader door het volledige koopaanbod van Funda, dagelijks bijgewerkt.
+        </p>
+      </header>
+      <Suspense fallback={<ListingsSkeleton />}>
+        <ListingResults searchParams={searchParams} />
+      </Suspense>
     </main>
   );
 }

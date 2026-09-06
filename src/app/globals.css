@@ -1,31 +1,61 @@
 @import "tailwindcss";
 
 @theme inline {
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--heading-font);
+
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
+  --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chrome: var(--chrome);
+  --color-link: var(--secondary);
+
+  /* Cards */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --radius-card: var(--radius);
+  --shadow-card: 0 1px 3px rgb(34 34 34 / 0.08), 0 1px 2px rgb(34 34 34 / 0.04);
+
+  /* Header */
   --shadow-header: inset 0 -1px 0 rgb(34 34 34 / 0.08);
+
+  /* Width at which a full-width listing card has room to lay out horizontally. */
+  --container-featured: 44rem;
 }
 
 :root {
   --heading-font: var(--font-proxima-nova);
+
   --background: #ffffff;
   --foreground: #222222;
   --primary: #ff9b22;
   --primary-foreground: #222222;
+  --secondary: #0072b4;
+  --secondary-foreground: #ffffff;
+  --muted: #f0efe9;
   --muted-foreground: #5c5c56;
+  --accent: #ecebe4;
+  --accent-foreground: #222222;
   --border: #e2e1db;
+  --input: #d8d7d0;
   --ring: #0072b4;
   --chrome: #f5f5f1;
+
+  --card: #ffffff;
+  --card-foreground: #222222;
   --radius: 0.5rem;
 }
 
@@ -38,4 +68,15 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Mobile browsers flash a grey box on tap; the focus ring already covers this. */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The default blue selection clashes with the orange brand colour. */
+::selection {
+  background: color-mix(in srgb, var(--primary) 28%, white);
 }
