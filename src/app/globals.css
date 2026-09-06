@@ -99,6 +99,7 @@ a {
 
 /* Match Leaflet's built-in controls and tooltips to the site styles. */
 .leaflet-container {
+  isolation: isolate; /* Isolate the map from other content. */
   font-family: inherit;
   border-radius: var(--radius);
 }

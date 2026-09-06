@@ -19,7 +19,7 @@ export function LazyPropertyMap({
   latitude: number;
   longitude: number;
 }) {
-  const { ref, inView } = useInView<HTMLDivElement>("240px");
+  const { ref, inView } = useInView<HTMLDivElement>("400px");
 
   return (
     <div ref={ref}>
