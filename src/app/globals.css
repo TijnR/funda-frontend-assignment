@@ -37,19 +37,6 @@
 
   /* Detail page: description and features beside a sidebar that never gets cramped. */
   --grid-template-columns-listing: minmax(0, 2fr) minmax(18rem, 1fr);
-
-  --animate-gallery-in: gallery-in 200ms ease-out;
-
-  @keyframes gallery-in {
-    from {
-      opacity: 0;
-      transform: scale(0.985);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
 }
 
 :root {
@@ -90,6 +77,15 @@ body {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Tailwind's reset drops the pointer cursor on interactive elements; put it back. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label[for],
+summary,
+a[href] {
+  cursor: pointer;
 }
 
 /* The default blue selection clashes with the orange brand colour. */

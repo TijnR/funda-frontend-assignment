@@ -18,7 +18,7 @@ export function GalleryDialog() {
           event.preventDefault();
           restoreFocus();
         }}
-        className="inset-0 top-0 left-0 h-dvh w-screen max-w-none translate-0 overflow-hidden rounded-none border-0 p-0 shadow-none motion-safe:animate-gallery-in sm:p-0"
+        className="inset-0 top-0 left-0 h-dvh w-screen max-w-none translate-0 overflow-hidden rounded-none border-0 p-0 shadow-none sm:p-0"
       >
         {view === "overview" && <GalleryOverview />}
         {view === "lightbox" && <GalleryLightbox />}
