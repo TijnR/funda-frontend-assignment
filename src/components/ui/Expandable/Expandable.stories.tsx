@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 import { Expandable } from "./Expandable";
 
@@ -24,13 +25,48 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const toggle = canvas.getByRole("button", { name: /Lees meer/ });
+    const region = document.getElementById(toggle.getAttribute("aria-controls")!);
 
-/** Content short enough to show in full loses the disclosure entirely. */
+    await expect(toggle).toHaveAttribute("aria-expanded", "false");
+    await expect(region).not.toBeVisible();
+
+    await userEvent.click(toggle);
+
+    await expect(canvas.getByRole("button", { name: /Lees minder/ })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+    await expect(region).toBeVisible();
+
+    await userEvent.click(toggle);
+
+    await expect(canvas.getByRole("button", { name: /Lees meer/ })).toBeInTheDocument();
+    await expect(region).not.toBeVisible();
+  },
+};
+
 export const NotCollapsible: Story = {
   args: { collapsible: false },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.queryByRole("button")).not.toBeInTheDocument();
+    await expect(canvas.getAllByText(paragraph)).toHaveLength(3);
+  },
 };
 
 export const CustomLabels: Story = {
   args: { expandLabel: "Alle kenmerken tonen", collapseLabel: "Minder kenmerken tonen" },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole("button", { name: /Alle kenmerken tonen/ }));
+    await expect(
+      canvas.getByRole("button", { name: /Minder kenmerken tonen/ }),
+    ).toBeInTheDocument();
+  },
 };
