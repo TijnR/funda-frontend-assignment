@@ -13,7 +13,7 @@ export function FactGrid({ facts }: { facts: Fact[] }) {
   if (facts.length === 0) return null;
 
   return (
-    <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-card border bg-border sm:grid-cols-3">
+    <dl className="grid grid-cols-1 gap-px overflow-hidden rounded-card border bg-border sm:grid-cols-3">
       {facts.map(({ emphasized = true, icon: Icon, label, value }) => (
         <div key={label} className="bg-card p-4 sm:p-5">
           <dt className="flex items-center gap-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">

@@ -16,7 +16,7 @@ export function DetailSkeleton() {
           <Skeleton className="h-9 w-40 sm:self-end" />
         </div>
 
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-card border bg-border sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-card border bg-border sm:grid-cols-3">
           {Array.from({ length: 6 }, (_, index) => (
             <div key={index} className="space-y-2 bg-card p-4 sm:p-5">
               <Skeleton className="h-4 w-24" />
