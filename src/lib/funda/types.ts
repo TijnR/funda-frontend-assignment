@@ -2,8 +2,17 @@ export interface PropertyImage {
   url: string;
   width: number;
   height: number;
-  /** Alt text from Funda. Not every listing has one. */
   description?: string;
+}
+
+export interface PropertyFeature {
+  label: string;
+  value: string;
+}
+
+export interface PropertyFeatureGroup {
+  title: string;
+  features: PropertyFeature[];
 }
 
 export interface ListingSummary {
@@ -16,6 +25,21 @@ export interface ListingSummary {
   rooms: number | null;
   plotArea: number | null;
   image: PropertyImage | null;
+}
+
+export interface ListingDetail extends ListingSummary {
+  description: string | null;
+  buildYear: string | null;
+  bedrooms: number | null;
+  energyLabel: string | null;
+  brokerName: string | null;
+  fundaUrl: string | null;
+  featureGroups: PropertyFeatureGroup[];
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  } | null;
+  photos: PropertyImage[];
 }
 
 export interface PaginatedListings {

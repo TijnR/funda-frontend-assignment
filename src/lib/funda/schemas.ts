@@ -3,6 +3,39 @@ import { z } from "zod";
 const nullableString = z.string().nullable().optional();
 const nullableNumber = z.number().nullable().optional();
 
+export const rawFundaImageSchema = z
+  .object({
+    Height: nullableNumber,
+    Url: nullableString,
+    UrlSecure: nullableString,
+    Width: nullableNumber,
+  })
+  .strip();
+
+export const rawFundaMediaSchema = z
+  .object({
+    Categorie: nullableNumber,
+    ContentType: nullableNumber,
+    IndexNumber: nullableNumber,
+    Omschrijving: nullableString,
+    MediaItems: z.array(rawFundaImageSchema).nullable().optional(),
+  })
+  .strip();
+
+export const rawFundaFeatureSchema = z
+  .object({
+    Naam: nullableString,
+    Waarde: nullableString,
+  })
+  .strip();
+
+export const rawFundaFeatureGroupSchema = z
+  .object({
+    Kenmerken: z.array(rawFundaFeatureSchema).nullable().optional(),
+    Titel: nullableString,
+  })
+  .strip();
+
 export const rawListingSummarySchema = z
   .object({
     AantalKamers: nullableNumber,
@@ -57,5 +90,45 @@ export const rawListingsResponseSchema = z.union([
   rawListingsSuccessSchema,
 ]);
 
+const rawListingDetailSuccessSchema = z
+  .object({
+    AantalKamers: nullableNumber,
+    AantalSlaapkamers: nullableNumber,
+    Adres: z.string().trim().min(1),
+    Bouwjaar: z.union([z.string(), z.number()]).nullable().optional(),
+    Energielabel: z
+      .object({
+        Label: nullableString,
+      })
+      .strip()
+      .nullable()
+      .optional(),
+    Kenmerken: z.array(rawFundaFeatureGroupSchema).nullable().optional(),
+    KoopPrijs: nullableNumber,
+    Koopprijs: nullableNumber,
+    Makelaar: nullableString,
+    Media: z.array(rawFundaMediaSchema).nullable().optional(),
+    PerceelOppervlakte: nullableNumber,
+    Plaats: z.string().trim().min(1),
+    Postcode: nullableString,
+    URL: nullableString,
+    ValidationFailed: z.literal(false).nullable().optional(),
+    ValidationReport: nullableString,
+    VolledigeOmschrijving: nullableString,
+    WGS84_X: nullableNumber,
+    WGS84_Y: nullableNumber,
+    WoonOppervlakte: nullableNumber,
+  })
+  .strip();
+
+export const rawListingDetailSchema = z.union([
+  rawValidationFailureSchema,
+  rawListingDetailSuccessSchema,
+]);
+
+export type RawFundaFeatureGroup = z.infer<typeof rawFundaFeatureGroupSchema>;
+export type RawFundaImage = z.infer<typeof rawFundaImageSchema>;
+export type RawFundaMedia = z.infer<typeof rawFundaMediaSchema>;
+export type RawListingDetail = z.infer<typeof rawListingDetailSuccessSchema>;
 export type RawListingSummary = z.infer<typeof rawListingSummarySchema>;
 export type RawListingsResponse = z.infer<typeof rawListingsSuccessSchema>;

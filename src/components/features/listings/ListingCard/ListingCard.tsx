@@ -27,7 +27,7 @@ export function ListingCard({
 }) {
   return (
     <Link
-      href={`/listing/${listing.id}`}
+      href={`/detail/${listing.id}`}
       className="group @container/listing-card block h-full rounded-card focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:outline-none"
       aria-label={`${featured ? `${FEATURED_LABEL}: ` : ""}${listing.address}, ${listing.city}, ${formatPrice(listing.price)}`}
     >

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getListings } from "./client";
+import { getListing, getListings } from "./client";
 import { PAGE_SIZE } from "./constants";
 
 vi.mock("server-only", () => ({}));
@@ -98,5 +98,57 @@ describe("getListings", () => {
     fetchMock.mockResolvedValue(new Response(null, { status: 503 }));
 
     await expect(getListings(1)).rejects.toThrow("Funda returned status 503.");
+  });
+});
+
+describe("getListing", () => {
+  const fetchMock = vi.fn<typeof fetch>();
+
+  beforeEach(() => {
+    vi.stubEnv("FUNDA_API_KEY", "test-api-key");
+    vi.stubGlobal("fetch", fetchMock);
+  });
+
+  afterEach(() => {
+    fetchMock.mockReset();
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+
+  it("requests the koop detail feed for the given id", async () => {
+    fetchMock.mockResolvedValue(
+      Response.json({ Adres: "Keizersgracht 1", Plaats: "Amsterdam" }, { status: 200 }),
+    );
+
+    await expect(getListing("abc 123")).resolves.toMatchObject({
+      id: "abc 123",
+      address: "Keizersgracht 1",
+      city: "Amsterdam",
+    });
+
+    const [input] = fetchMock.mock.calls[0] ?? [];
+    expect(typeof input === "string" ? input : "").toContain(
+      "/feeds/Aanbod.svc/json/detail/test-api-key/koop/abc%20123/",
+    );
+  });
+
+  it("treats a 404 as a missing listing rather than an error", async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 404 }));
+
+    await expect(getListing("gone")).resolves.toBeNull();
+  });
+
+  it("still reports a real upstream failure", async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 503 }));
+
+    await expect(getListing("abc-123")).rejects.toThrow("Funda returned status 503.");
+  });
+
+  it("surfaces the feed's own validation report", async () => {
+    fetchMock.mockResolvedValue(
+      Response.json({ ValidationFailed: true, ValidationReport: "Ongeldige sleutel" }),
+    );
+
+    await expect(getListing("abc-123")).rejects.toThrow("Ongeldige sleutel");
   });
 });

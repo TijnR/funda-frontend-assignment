@@ -14,10 +14,19 @@ const nextConfig: NextConfig = {
       revalidate: 300,
       expire: 3600,
     },
+    fundaDetail: {
+      stale: 300,
+      revalidate: 1800,
+      expire: 86400,
+    },
+    // A listing we could not find may still be lagging behind in the Funda feed.
+    fundaMissing: {
+      stale: 30,
+      revalidate: 60,
+      expire: 300,
+    },
   },
   images: {
-    // AVIF first: roughly 20% smaller than WebP for photography, which is
-    // nearly the whole payload of this site. Browsers without AVIF get WebP.
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
