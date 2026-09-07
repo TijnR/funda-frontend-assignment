@@ -102,6 +102,8 @@ I spent around nine hours on this, which is what shaped the choices below.
 
 The assessment covers buying only. The Huren, Verkopen and Nieuwbouw items in the header are rendered as disabled on purpose, to show where they would live without implying they work. There is no search or filtering, so the overview shows the full feed, paginated.
 
+The "Blikvanger" cards are my invention, not a Funda concept and not backed by anything in the feed. A grid of 25 identical cards is dull to look at, so `featuredListing.ts` promotes up to three of them per page to full width, spaced so each one has a complete row above it. On a short final page it highlights fewer rather than turning the whole page into banners.
+
 ## What I would do next
 
 The map is the weakest part. It works and it lazy-loads, but the marker, popup and styling are close to Leaflet defaults, and I have not looked at what happens on slow connections or at the interaction between the tile layer and the page's own scroll behaviour.
