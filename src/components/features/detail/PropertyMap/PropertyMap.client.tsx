@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useState } from "react";
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -15,12 +16,25 @@ export function PropertyMap({
 }) {
   const position: [number, number] = [latitude, longitude];
 
+  // Cache Components keeps a visited route mounted with React Activity: the DOM survives while
+  // the effects are torn down. React Leaflet cannot come back from that, because on re-activation
+  // its ref callback sees the container it already initialised and skips creating a map, while its
+  // children re-attach to the map instance Leaflet removed on the way out. Bumping the key while
+  // the route is hidden throws that subtree away, so returning to the route renders a fresh
+  // container that Leaflet initialises from scratch.
+  const [mapInstance, setMapInstance] = useState(0);
+
+  useLayoutEffect(() => {
+    return () => setMapInstance((current) => current + 1);
+  }, []);
+
   return (
     <section
       aria-label={`Kaart van ${address}`}
       className="overflow-hidden rounded-card border border-border shadow-card"
     >
       <MapContainer
+        key={mapInstance}
         center={position}
         zoom={15}
         scrollWheelZoom={false}
