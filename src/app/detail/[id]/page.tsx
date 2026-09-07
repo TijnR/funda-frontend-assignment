@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -22,19 +23,27 @@ export async function generateMetadata({ params }: ListingParams): Promise<Metad
   };
 }
 
-async function DetailContent({ params }: ListingParams) {
-  const { id } = await params;
+async function DetailContent({ id }: { id: string }) {
+  "use cache";
+  cacheLife("fundaDetail");
+  cacheTag(`listing:${id}`);
+
   const listing = await getListing(id);
   if (!listing) notFound();
 
   return <Detail listing={listing} />;
 }
 
+async function ResolvedDetailContent({ params }: ListingParams) {
+  const { id } = await params;
+  return <DetailContent id={id} />;
+}
+
 export default function DetailPage({ params }: DetailPageProps) {
   return (
     <main id="main-content" tabIndex={-1} className={cn(PAGE_SHELL_CLASS, "grow py-6 sm:py-8")}>
       <Suspense fallback={<DetailSkeleton />}>
-        <DetailContent params={params} />
+        <ResolvedDetailContent params={params} />
       </Suspense>
     </main>
   );

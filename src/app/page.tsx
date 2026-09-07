@@ -5,10 +5,20 @@ import { ListingResults } from "@/components/features/listings/ListingResults/Li
 import { ListingsSkeleton } from "@/components/features/listings/ListingsSkeleton/ListingsSkeleton";
 import { PAGE_SHELL_CLASS } from "@/styles/shared";
 import { cn } from "@/utils/cn";
+import { parsePage } from "@/utils/format";
 
 export const metadata: Metadata = {
   title: "Koopwoningen",
 };
+
+async function ResolvedListingResults({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  return <ListingResults requestedPage={parsePage(params.page)} />;
+}
 
 /**
  * Stays synchronous so the shell prerenders: the header, the page title and the
@@ -29,7 +39,7 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
         </p>
       </header>
       <Suspense fallback={<ListingsSkeleton />}>
-        <ListingResults searchParams={searchParams} />
+        <ResolvedListingResults searchParams={searchParams} />
       </Suspense>
     </main>
   );

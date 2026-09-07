@@ -1,3 +1,4 @@
+import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 
 import { EmptyState } from "@/components/features/listings/EmptyState/EmptyState";
@@ -8,17 +9,14 @@ import { getListings } from "@/lib/funda/client";
 import { PAGE_SIZE } from "@/lib/funda/constants";
 import { LISTING_GRID_CLASS } from "@/styles/shared";
 import { cn } from "@/utils/cn";
-import { parsePage } from "@/utils/format";
 
 import { getFeaturedListingIndices } from "./featuredListing";
 
-export async function ListingResults({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const params = await searchParams;
-  const requestedPage = parsePage(params.page);
+export async function ListingResults({ requestedPage }: { requestedPage: number }) {
+  "use cache";
+  cacheLife("fundaListings");
+  cacheTag(`listings:koop:${requestedPage}`);
+
   const listings = await getListings(requestedPage);
 
   if (requestedPage > listings.pageCount) notFound();
